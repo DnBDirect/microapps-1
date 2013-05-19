@@ -7,7 +7,7 @@ The library is composed of:
 
 * dnbapi.js - core API that exposes interfaces to D&B Direct
 * components/ui/ui.js - user-interface (UI) library that provides streamlined rendering of frequently used UI elements and interactions
-* 
+* JSON facade
 
 ## Requirements
 ### Client-Side Requirements
@@ -19,8 +19,6 @@ On the server-side, the core library communicates to the D&B Direct API by means
 Although the default facade is PHP-based, we've included several alternate versions to support different environments. Take a look in the microapps/proxies folder. 
 
 It is possible to create your own facade to support other server environments. Refer to the [Javascript Library Configuration](#javascript-library-configuration) section for details.
-
-#javascript-library-configuration
 
 ## Installation
 
