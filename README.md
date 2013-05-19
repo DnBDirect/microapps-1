@@ -22,10 +22,70 @@ On the server-side, the core library communicates to the D&B Direct API by means
 
 Although a sample facade is PHP-based, it is possible to create your own facade to support other server environments. Refer to the Javascript Library Configuration section to configure the core API library to use a different facade.
 
+## Installation
 
-```php
-test
-```
+1. Download the [Source Code](https://github.com/DnBDirect/microapps-1/archive/master.zip)
+
+### Default Installation in a PHP environment
+
+1. Extract to a folder under your webroot, for example /var/www/microapps.
+
+2. Create a local_settings.php file under microapps/proxies/ with the contents below, using your D&B Direct API credentials:
+
+   ```php
+   <?php
+   $API_KEY =      'Your API KEY';
+   $API_USERNAME = 'Your username';
+   $API_PASSWORD = 'Your password';
+   ```
+3. For best-performance, ensure the microapps/proxies/cache folder is writable by your webprocess. On xNIX-based systems, you can typically run:
+
+   ```bash
+   chmod 666 microapps/proxies/cache.
+   ```
+
+4. Browse to http://your-server/path/to/microapps/
+
+### Alternative Installation using Apache mod_proxy
+1. Ensure Apache mod_proxy is enabled. Typically, you'd look for the following lines in your HTTPD_CONF/conf/httpd.conf file. If they are not present, add them to the bottom. If they are present but the lines begin with a comment (#) character, remove the character. Save the file afterward. Usually, the modules are already present and enabled.
+
+   ```ApacheConf
+   LoadModule proxy_module modules/mod_proxy.so
+   LoadModule proxy_balancer_module modules/mod_proxy_balancer.so
+   LoadModule proxy_http_module modules/mod_proxy_http.so
+   ```
+
+2. Extract to a folder under your webroot, for example /var/www/microapps.
+
+3. Add the following to location match to your Apache config file. This configures /dnbdirectrest as a local JSON endpoint for D&B Direct using HP's credentials: Open microapps/proxies/json_facade.php in a text editor and update the following line with your D&B Direct API credentials:
+
+   ```ApacheConf
+   <LocationMatch "/dnbdirectrest">
+     ProxyPass http://dnbdirect-api.dnb.com/DnBAPI-13/rest/
+     ProxyPassReverse http://dnbdirect-api.dnb.com/DnBAPI-13/rest/
+     RequestHeader set Accept "application/json"
+     RequestHeader set Content-type "application/json"
+     RequestHeader set API-KEY "Your API KEY"
+     RequestHeader set username "Your username"
+     RequestHeader set password "Your password"
+   </LocationMatch>
+   ```
+4. Restart Apache
+
+5. Browse to http://your-server/dnbdirectrest/company/001382555 and ensure you see a JSON response. If you do not, there's an issue with the local JSON endpoint - check your Apache error log.
+
+6. Open each microapp's HTML page, in a text editor and replace
+
+   ```HTML
+   {API_BASE:'../proxies/json_facade.php'}
+   ```
+   with
+   ```HTML
+   { API_BASE: '/dnbdirectrest' }
+   ```
+   and save.
+
+7. Browse to http://your-server/path/to/microapps/
 
 ## Adding the Code to your Page
 To use the core and UI library, you would typically add the following code to your page:
@@ -62,7 +122,6 @@ It can also be configured to retry requests that were unfilled due to over-QPS e
 ```
 
 ## CDN Hosted Javascript Library
-
 Google and other enterprises host jQuery on CDN networks are available for public use.
 We also make the D&B Direct Javascript Library on a CDN. To hotlink to CDN-hosted libraries, use...
 
