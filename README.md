@@ -3,24 +3,24 @@ D&B Direct MicroApps
 The D&B Direct Javascript Library is designed to simplify integration of D&B Direct into web-based applications.
 
 
-The D&B Direct Javascript Library is designed to simplify integration of D&B Direct into web-based applications. The library is composed of:
+The library is composed of:
 
-dnbapi.js
-core API that exposes interfaces to D&B Direct
-components/ui/ui.js
-user-interface (UI) library that provides streamlined rendering of frequently used UI elements and interactions
-proxies/json_facade.php
-sample PHP-based API facade
-
+* dnbapi.js - core API that exposes interfaces to D&B Direct
+* components/ui/ui.js - user-interface (UI) library that provides streamlined rendering of frequently used UI elements and interactions
+* 
 
 ## Requirements
 ### Client-Side Requirements
 The library requires a recent version of jQuery. jQuery was chosen because of its unbiquity, extensibility, and developer support. The UI library works best on IE7+, Chrome 3.3+, Firefox 10+, Safari 5+, and Opera 11+.
 
 ### Server-Side Requirements
-On the server-side, the core library communicates to the D&B Direct API by means of a facade that resides on your server. The sample facade is designed to be easily deployable with as few dependancies as possible. The included facade requires PHP 5.3 or newer (most modern LAMP stacks should work just fine). Refer to its source for additional notes.
+On the server-side, the core library communicates to the D&B Direct API by means of a facade that resides on your server [Why is this needed?](http://developer.yahoo.com/javascript/howto-proxy.html) The sample facade is designed to be easily deployable with as few dependancies as possible. The included facade requires PHP 5.3 or newer (most modern LAMP stacks should work just fine). Refer to its source for additional notes.
 
-Although a sample facade is PHP-based, it is possible to create your own facade to support other server environments. Refer to the Javascript Library Configuration section to configure the core API library to use a different facade.
+Although the default facade is PHP-based, we've included several alternate versions to support different environments. Take a look in the microapps/proxies folder. 
+
+It is possible to create your own facade to support other server environments. Refer to the [Javascript Library Configuration](#javascript-library-configuration) section for details.
+
+#javascript-library-configuration
 
 ## Installation
 
